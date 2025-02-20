@@ -38,16 +38,21 @@ def dod_5220_overwrite(file_path):
 
 def secure_delete(file_path, method='gutmann'):
     """Overwrite and delete a file securely using chosen method."""
-    try:
-        if method == 'gutmann':
-            gutmann_overwrite(file_path)
-        elif method == 'dod5220':
-            dod_5220_overwrite(file_path)
-        else:
-            print("Unknown method, skipping overwrite.")
-        os.remove(file_path)
-        print(f"Securely deleted: {file_path}")
-    except Exception as e:
-        print(f"Failed to delete {file_path}: {e}")
+    # Ask for user confirmation before proceeding
+    confirmation = input(f"Are you sure you want to securely delete {file_path}? This action cannot be undone. (y/n): ").strip().lower()
 
-# Rest of the script remains the same
+    if confirmation == 'y' or confirmation == 'yes':
+        try:
+            if method == 'gutmann':
+                gutmann_overwrite(file_path)
+            elif method == 'dod5220':
+                dod_5220_overwrite(file_path)
+            else:
+                print("Unknown method, skipping overwrite.")
+            os.remove(file_path)
+            print(f"Securely deleted: {file_path}")
+        except Exception as e:
+            print(f"Failed to delete {file_path}: {e}")
+    else:
+        print("Deletion aborted. File not deleted.")
+
